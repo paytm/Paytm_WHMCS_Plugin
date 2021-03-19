@@ -10,13 +10,13 @@ $gatewaymodule = "paytm";
 $GATEWAY = getGatewayVariables($gatewaymodule);
 
 $response = array();
-$response = $_POST;
-
+$response = $_POST;   
+  
 if(isset($response['ORDERID']) && isset($response['STATUS']) && isset($response['RESPCODE']) && $response['RESPCODE'] != 325){
 
-	$txnid  = $response['ORDERID'];	
-	$txnid  = checkCbInvoiceID($txnid,'paytm');	
-	
+	$txnid_arr  = explode('_',$response['ORDERID']);
+	$tnxid = $txnid_arr[0];
+	$txnid  = checkCbInvoiceID($response['ORDERID'],'paytm');	
 	$status =$response['STATUS'];
 	$paytm_trans_id = $response['TXNID'];
 	$checksum_recv='';	
@@ -59,8 +59,12 @@ if(isset($response['ORDERID']) && isset($response['STATUS']) && isset($response[
     header("Location: $filename");
 }
 else{
+
+ 
 	$returnResponse=(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http")."://$_SERVER[HTTP_HOST]$_SERVER[SCRIPT_NAME]";
 	$location=str_replace('modules/gateways/callback/paytm.php','', $returnResponse);
+	
+	 
 	header("Location: $location");
 }
 ?>
