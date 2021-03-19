@@ -14,7 +14,8 @@ $response = $_POST;
 
 if(isset($response['ORDERID']) && isset($response['STATUS']) && isset($response['RESPCODE']) && $response['RESPCODE'] != 325){
 
-	$txnid  = $response['ORDERID'];	
+	$txnid_arr  = explode('_',$response['ORDERID']);
+	$tnxid = $txnid_arr[0];
 	$txnid  = checkCbInvoiceID($txnid,'paytm');	
 	
 	$status =$response['STATUS'];
